@@ -7,6 +7,18 @@
 		y: number;
 	};
 
+	const luxuryColorPalette = [
+		'#663399', // Royal Purple
+		'#B03060', // Maroon
+		'#FFD700', // Gold
+		'#800000', // Crimson
+		'#8B4513', // Saddle Brown
+		'#6B8E23' // Olive Drab
+	];
+
+	const getRandomColor = () =>
+		luxuryColorPalette[Math.floor(Math.random() * luxuryColorPalette.length)];
+
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
 	let width: number;
@@ -83,18 +95,22 @@
 		const random = Math.random();
 
 		let func = drawHorizontalLine;
-		if (random >= 0.25 && random <= 0.5) {
+		if (random >= 0.25 && random < 0.5) {
 			func = drawDiagonalLine;
 		} else if (random >= 0.5 && random < 0.75) {
 			func = drawArc;
 		} else if (random >= 0.75) {
 			func = drawQuarterArc;
 		}
+		const isColored = Math.random() > 0.5;
 		gridCoords.forEach((coord) => {
 			// DEBUG MODE
-			// ctx?.beginPath();
-			// ctx?.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
-			// ctx?.stroke();
+			if (ctx) {
+				// ctx.beginPath();
+				// ctx.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
+				// ctx.stroke();
+				ctx.strokeStyle = isColored ? getRandomColor() : 'black';
+			}
 			func(ctx, coord, stepX, stepY);
 		});
 	};
@@ -105,8 +121,8 @@
 
 		await tick();
 
-		stepX = width / steps;
-		stepY = width / steps;
+		stepX = width / (steps - 1);
+		stepY = height / (steps - 1);
 
 		canvas.width = width * dpr;
 		canvas.height = height * dpr;

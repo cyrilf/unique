@@ -12,7 +12,7 @@
 	let width: number;
 	let height: number;
 
-	let steps: number = 42;
+	let steps: number = 20;
 	let stepX: number;
 	let stepY: number;
 
@@ -22,24 +22,48 @@
 			y: (index % steps) * stepY
 		}));
 
+	const drawHorizontalLine = (
+		ctx: CanvasRenderingContext2D | null,
+		{ x, y }: Coord,
+		width: number,
+		height: number
+	) => {
+		const isHorizontal = Math.random() > 0.5;
+		ctx?.beginPath();
+		if (isHorizontal) {
+			ctx?.moveTo(x, y + height / 2);
+			ctx?.lineTo(x + width, y + height / 2);
+		} else {
+			ctx?.moveTo(x + width / 2, y);
+			ctx?.lineTo(x + width / 2, y + height);
+		}
+		ctx?.stroke();
+	};
+
 	const drawDiagonalLine = (
 		ctx: CanvasRenderingContext2D | null,
 		{ x, y }: Coord,
 		width: number,
 		height: number
 	) => {
-		const isLeftToRight = Math.random() > 0.5;
+		const isDownRight = Math.random() > 0.5;
 		ctx?.beginPath();
-		ctx?.moveTo(x, isLeftToRight ? y : y + height);
-		ctx?.lineTo(x + width, isLeftToRight ? y + height : y);
+		ctx?.moveTo(x, isDownRight ? y : y + height);
+		ctx?.lineTo(x + width, isDownRight ? y + height : y);
 		ctx?.stroke();
 	};
 
 	const draw = () => {
 		ctx?.clearRect(0, 0, width, height);
 		const gridCoords = getGridCoords();
+		const isHorizontal = Math.random() > 0.5;
+		const func = isHorizontal ? drawHorizontalLine : drawDiagonalLine;
 		gridCoords.forEach((coord) => {
-			drawDiagonalLine(ctx, coord, stepX, stepY);
+			// DEBUG MODE
+			// ctx?.beginPath();
+			// ctx?.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
+			// ctx?.stroke();
+			func(ctx, coord, stepX, stepY);
 		});
 	};
 
@@ -57,20 +81,10 @@
 
 		if (ctx) {
 			ctx.scale(dpr, dpr);
-			ctx.lineCap = 'square';
 			ctx.lineWidth = 2;
+			ctx.strokeStyle = 'rgba(0, 0, 0, 1)';
 			draw();
 		}
-
-		// let frame = requestAnimationFrame(loop);
-		// function loop() {
-		// 	// frame = requestAnimationFrame(loop);
-		// 	draw();
-		// }
-
-		// return () => {
-		// 	// cancelAnimationFrame(frame);
-		// };
 	});
 
 	function randomize() {

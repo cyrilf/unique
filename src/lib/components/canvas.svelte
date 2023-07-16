@@ -12,7 +12,7 @@
 	let width: number;
 	let height: number;
 
-	let steps: number = 20;
+	let steps = 20;
 	let stepX: number;
 	let stepY: number;
 
@@ -53,11 +53,43 @@
 		ctx?.stroke();
 	};
 
+	const drawQuarterArc = (ctx: CanvasRenderingContext2D | null, { x, y }: Coord, width: number) => {
+		ctx?.beginPath();
+		const random = Math.random();
+		const arc = (sAngle: number, eAngle: number) => ctx?.arc(x, y, width / 2, sAngle, eAngle);
+		if (random < 0.25) {
+			arc(0, 0.5 * Math.PI); // right-bottom
+		} else if (random >= 0.25 && random < 0.5) {
+			arc(0.5 * Math.PI, Math.PI); //bottom-left
+		} else if (random >= 0.5 && random < 0.75) {
+			arc(Math.PI, 1.5 * Math.PI); // left-top
+		} else {
+			arc(1.5 * Math.PI, 0); // top-right
+		}
+		ctx?.stroke();
+	};
+
+	const drawArc = (ctx: CanvasRenderingContext2D | null, { x, y }: Coord, width: number) => {
+		ctx?.beginPath();
+		const isBottom = Math.random() > 0.5;
+		ctx?.arc(x, y, width / 2, isBottom ? 0 : Math.PI, isBottom ? Math.PI : 0); // bottom
+		ctx?.stroke();
+		ctx?.closePath();
+	};
+
 	const draw = () => {
 		ctx?.clearRect(0, 0, width, height);
 		const gridCoords = getGridCoords();
-		const isHorizontal = Math.random() > 0.5;
-		const func = isHorizontal ? drawHorizontalLine : drawDiagonalLine;
+		const random = Math.random();
+
+		let func = drawHorizontalLine;
+		if (random >= 0.25 && random <= 0.5) {
+			func = drawDiagonalLine;
+		} else if (random >= 0.5 && random < 0.75) {
+			func = drawArc;
+		} else if (random >= 0.75) {
+			func = drawQuarterArc;
+		}
 		gridCoords.forEach((coord) => {
 			// DEBUG MODE
 			// ctx?.beginPath();

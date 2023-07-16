@@ -2,6 +2,37 @@
 	import Canvas from '../lib/components/canvas.svelte';
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-<Canvas />
+<svelte:head>
+	<title>Unique</title>
+</svelte:head>
+
+<div class="container">
+	<h1>Unique.</h1>
+	<div class="wrapper">
+		<Canvas />
+	</div>
+</div>
+
+<style>
+	:global(body) {
+		margin: 0;
+		padding: 0;
+	}
+
+	.container {
+		width: 100vw;
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.wrapper {
+		display: flex;
+		flex: 1;
+		align-items: center;
+	}
+	h1 {
+		font-family: 'Vollkorn', serif;
+		margin: 2rem;
+	}
+</style>

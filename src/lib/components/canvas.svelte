@@ -24,7 +24,7 @@
 	let width: number;
 	let height: number;
 
-	let steps = 20;
+	let steps = 23;
 	let stepX: number;
 	let stepY: number;
 
@@ -65,10 +65,16 @@
 		ctx?.stroke();
 	};
 
-	const drawQuarterArc = (ctx: CanvasRenderingContext2D | null, { x, y }: Coord, width: number) => {
+	const drawQuarterArc = (
+		ctx: CanvasRenderingContext2D | null,
+		{ x, y }: Coord,
+		width: number,
+		height: number
+	) => {
 		ctx?.beginPath();
 		const random = Math.random();
-		const arc = (sAngle: number, eAngle: number) => ctx?.arc(x, y, width / 2, sAngle, eAngle);
+		const arc = (sAngle: number, eAngle: number) =>
+			ctx?.arc(x, y, Math.min(width, height) / 2, sAngle, eAngle);
 		if (random < 0.25) {
 			arc(0, 0.5 * Math.PI); // right-bottom
 		} else if (random >= 0.25 && random < 0.5) {
@@ -81,12 +87,49 @@
 		ctx?.stroke();
 	};
 
-	const drawArc = (ctx: CanvasRenderingContext2D | null, { x, y }: Coord, width: number) => {
+	const drawArc = (
+		ctx: CanvasRenderingContext2D | null,
+		{ x, y }: Coord,
+		width: number,
+		height: number
+	) => {
 		ctx?.beginPath();
 		const isBottom = Math.random() > 0.5;
-		ctx?.arc(x, y, width / 2, isBottom ? 0 : Math.PI, isBottom ? Math.PI : 0); // bottom
+		ctx?.arc(x, y, Math.min(width, height) / 2, isBottom ? 0 : Math.PI, isBottom ? Math.PI : 0); // bottom
 		ctx?.stroke();
 		ctx?.closePath();
+	};
+
+	const drawSpiral = (
+		ctx: CanvasRenderingContext2D | null,
+		{ x, y }: Coord,
+		width: number,
+		height: number
+	) => {
+		ctx?.beginPath();
+		// ctx?.moveTo(x, y);
+		const isClockwise = Math.random() > 0.5;
+		const isFlip = Math.random() > 0.5;
+
+		if (ctx) {
+			ctx.lineWidth = 1;
+		}
+		const swirls = 2;
+		const radius = Math.min(width, height) / 2;
+		const maxAngle = swirls * Math.PI * 2;
+		const totalPoints = 360; // 360 * swirls
+		const startAngle = isClockwise ? 0 : maxAngle;
+		const angleIncrement = (isClockwise ? maxAngle : -maxAngle) / totalPoints;
+
+		for (let i = 0; i <= totalPoints; i++) {
+			const angle = startAngle + i * angleIncrement;
+			const spiralRadius = radius - i * (radius / totalPoints);
+			const a = x + radius + spiralRadius * Math.cos(angle + (isFlip ? Math.PI : 0));
+			const b = y + radius + spiralRadius * Math.sin(angle + (isFlip ? Math.PI : 0));
+			ctx?.lineTo(a, b);
+		}
+
+		ctx?.stroke();
 	};
 
 	const draw = () => {
@@ -95,12 +138,14 @@
 		const random = Math.random();
 
 		let func = drawHorizontalLine;
-		if (random >= 0.25 && random < 0.5) {
+		if (random >= 0.2 && random < 0.4) {
 			func = drawDiagonalLine;
-		} else if (random >= 0.5 && random < 0.75) {
+		} else if (random >= 0.4 && random < 0.6) {
 			func = drawArc;
-		} else if (random >= 0.75) {
+		} else if (random >= 0.6 && random < 0.8) {
 			func = drawQuarterArc;
+		} else if (random >= 0.8) {
+			func = drawSpiral;
 		}
 		const isColored = Math.random() > 0.5;
 		gridCoords.forEach((coord) => {
@@ -108,6 +153,7 @@
 			if (ctx) {
 				// ctx.beginPath();
 				// ctx.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
+				// ctx.strokeStyle = 'black';
 				// ctx.stroke();
 				ctx.strokeStyle = isColored ? getRandomColor() : 'black';
 			}
@@ -121,8 +167,8 @@
 
 		await tick();
 
-		stepX = width / (steps - 1);
-		stepY = height / (steps - 1);
+		stepX = width / steps;
+		stepY = height / steps;
 
 		canvas.width = width * dpr;
 		canvas.height = height * dpr;

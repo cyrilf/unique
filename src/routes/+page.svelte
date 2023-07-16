@@ -17,6 +17,7 @@
 	:global(body) {
 		margin: 0;
 		padding: 0;
+		background: rgba(200, 225, 225, 1);
 	}
 
 	.container {

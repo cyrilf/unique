@@ -29,6 +29,7 @@
 		box-shadow: 0px 0px 7px 2px rgba(0, 0, 0, 0.3) inset;
 		width: 400px;
 		height: 400px;
+		background-color: white;
 	}
 
 	.art {

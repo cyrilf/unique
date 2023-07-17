@@ -3,12 +3,11 @@ type Coord = {
 	y: number;
 };
 
-type DrawFunctionContext = (
+type DrawFunction = (
 	ctx: CanvasRenderingContext2D,
 	coord: Coord,
 	stepX: number,
 	stepY: number
 ) => void;
-type DrawFunction = (coord: Coord, stepX: number, stepY: number) => void;
 
 type Palette = string[];

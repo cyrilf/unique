@@ -1,4 +1,4 @@
-import { getRandomBool, pickOneRandomly } from '$lib/helpers/random';
+import { getRandomBool, getRandomInt, pickOneRandomly } from '$lib/helpers/random';
 
 const withContext =
 	(drawFn: DrawFunctionContext, ctx: CanvasRenderingContext2D) =>
@@ -19,6 +19,29 @@ export const drawHorizontalLine = (
 	} else {
 		ctx.moveTo(x, y - height / 2);
 		ctx.lineTo(x, y + height / 2);
+	}
+	ctx.stroke();
+};
+
+export const drawBlobbyLine = (
+	ctx: CanvasRenderingContext2D,
+	{ x, y }: Coord,
+	width: number,
+	height: number
+) => {
+	ctx.beginPath();
+
+	const isRight = getRandomBool();
+	let i = 10;
+	while (i > 0) {
+		ctx.arc(
+			x,
+			y,
+			Math.min(width, height) / (1 + i),
+			(isRight ? 0.5 : 1.5) * Math.PI,
+			(isRight ? 1.5 : 0.5) * Math.PI
+		);
+		i--;
 	}
 	ctx.stroke();
 };
@@ -52,6 +75,39 @@ export const drawSquareOrCircle = (
 		ctx[isFill ? 'fill' : 'stroke']();
 	}
 	// ctx.stroke();
+};
+
+export const drawCircles = (
+	ctx: CanvasRenderingContext2D,
+	{ x, y }: Coord,
+	width: number,
+	height: number
+) => {
+	let radius = Math.max(0, Math.min(width, height) / 2 - 5);
+	const gap = radius / (getRandomInt(10) + 1);
+	while (radius > 0) {
+		// gap = radius / getRandomInt(10);
+		ctx.beginPath();
+		ctx.arc(x, y, radius, 0, 2 * Math.PI);
+		radius -= gap;
+		ctx.stroke();
+	}
+};
+
+export const drawSquares = (
+	ctx: CanvasRenderingContext2D,
+	{ x, y }: Coord,
+	width: number,
+	height: number
+) => {
+	let size = Math.min(height, width);
+	const gap = size / (getRandomInt(20) + 1);
+	while (size > 0) {
+		ctx.beginPath();
+		ctx.strokeRect(x - size / 2, y - size / 2, size, size);
+		size -= gap;
+		ctx.stroke();
+	}
 };
 
 export const drawDiagonalLine = (
@@ -134,7 +190,10 @@ const drawFunctions = [
 	drawArc,
 	drawQuarterArc,
 	drawSpiral,
-	drawSquareOrCircle
+	drawSquareOrCircle,
+	drawCircles,
+	drawSquares,
+	drawBlobbyLine
 ];
 
 export class Drawer {

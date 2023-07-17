@@ -52,6 +52,37 @@
 		ctx?.stroke();
 	};
 
+	const drawSquareOrCircle = (
+		ctx: CanvasRenderingContext2D | null,
+		{ x, y }: Coord,
+		width: number,
+		height: number
+	) => {
+		const isSquare = Math.random() > 0.5;
+		const isFill = Math.random() > 0.5;
+		const isLarge = Math.random() > 0.5;
+
+		ctx?.beginPath();
+		if (isSquare) {
+			ctx?.[isFill ? 'fillRect' : 'strokeRect'](
+				x + width / 2 - width / (isLarge ? 1.5 : 4) / 2,
+				y + width / 2 - height / (isLarge ? 1.5 : 4) / 2,
+				width / (isLarge ? 1.5 : 4),
+				height / (isLarge ? 1.5 : 4)
+			);
+		} else {
+			ctx?.arc(
+				x + width / 2,
+				y + width / 2,
+				isLarge ? Math.max(0, Math.min(width, height) / 2 - 1) : Math.min(width, height) / 4,
+				0,
+				2 * Math.PI
+			);
+			ctx?.[isFill ? 'fill' : 'stroke']();
+		}
+		// ctx?.stroke();
+	};
+
 	const drawDiagonalLine = (
 		ctx: CanvasRenderingContext2D | null,
 		{ x, y }: Coord,
@@ -138,16 +169,19 @@
 		const random = Math.random();
 
 		let func = drawHorizontalLine;
-		if (random >= 0.2 && random < 0.4) {
+		if (random >= 0.15 && random < 0.31) {
 			func = drawDiagonalLine;
-		} else if (random >= 0.4 && random < 0.6) {
+		} else if (random >= 0.31 && random < 0.47) {
 			func = drawArc;
-		} else if (random >= 0.6 && random < 0.8) {
+		} else if (random >= 0.47 && random < 0.63) {
 			func = drawQuarterArc;
-		} else if (random >= 0.8) {
+		} else if (random >= 0.63 && random < 0.84) {
 			func = drawSpiral;
+		} else if (random >= 0.84) {
+			func = drawSquareOrCircle;
 		}
 		const isColored = Math.random() > 0.5;
+		canvas.style.filter = isColored ? 'hue-rotate(' + Math.floor(Math.random() * 360) + 'deg)' : '';
 		gridCoords.forEach((coord) => {
 			// DEBUG MODE
 			if (ctx) {
@@ -155,7 +189,9 @@
 				// ctx.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
 				// ctx.strokeStyle = 'black';
 				// ctx.stroke();
-				ctx.strokeStyle = isColored ? getRandomColor() : 'black';
+				const color = isColored ? getRandomColor() : 'black';
+				ctx.fillStyle = color;
+				ctx.strokeStyle = color;
 			}
 			func(ctx, coord, stepX, stepY);
 		});

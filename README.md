@@ -1,3 +1,16 @@
+![Unique.](./static/unique.png)
+
+# Unique.
+
+Generative art.  
+You can see the [live version here](https://unique.cyrilf.com).
+
+![Unique screenshot](./static/unique-screenshot.png)
+
+---
+
+Dev stuff:
+
 # create-svelte
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).

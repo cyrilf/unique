@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import Frame from './frame.svelte';
 	import { getRandomColor, getHueFilter } from '$lib/helpers/colors';
 	import { getRandomBool } from '$lib/helpers/random';
 	import { Drawer } from '$lib/helpers/draw';

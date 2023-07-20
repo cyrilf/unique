@@ -1,6 +1,6 @@
 import { getRandomBool } from '$lib/helpers/random';
 
-export const drawDiagonalLine = (
+const drawDiagonalLine = (
 	ctx: CanvasRenderingContext2D,
 	{ x, y }: Coord,
 	width: number,
@@ -13,4 +13,4 @@ export const drawDiagonalLine = (
 	ctx.stroke();
 };
 
-// export default drawDiagonalLine;
+export default drawDiagonalLine;

@@ -8,8 +8,8 @@
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
-	let width: number;
-	let height: number;
+	let width: number = 400;
+	let height: number = 400;
 
 	let steps = 23;
 	let stepX: number;
@@ -19,6 +19,9 @@
 	onMount(async () => {
 		const dpr = window.devicePixelRatio;
 		ctx = canvas.getContext('2d');
+
+		width = Math.min(window.innerWidth - 92, 400);
+		height = Math.min(window.innerHeight, width);
 
 		await tick();
 		stepX = width / steps;
@@ -55,12 +58,18 @@
 		});
 	};
 
-	function randomize() {
+	const randomize = () => {
 		// steps = steps + 2;
 		// stepX = width / steps;
 		// stepY = width / steps;
 		ctx && draw(ctx);
-	}
+	};
 </script>
 
-<Frame bind:canvas bind:width bind:height on:click={randomize} />
+<canvas bind:this={canvas} {width} {height} on:click={randomize} />
+
+<style>
+	canvas {
+		cursor: pointer;
+	}
+</style>

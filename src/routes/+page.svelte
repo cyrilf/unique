@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Canvas from '../lib/components/canvas.svelte';
+	import Frame from '$lib/components/frame.svelte';
+	import Canvas from '$lib/components/canvas.svelte';
 </script>
 
 <svelte:head>
@@ -9,7 +10,9 @@
 <div class="container">
 	<h1>Unique.</h1>
 	<div class="wrapper">
-		<Canvas />
+		<Frame>
+			<Canvas />
+		</Frame>
 	</div>
 </div>
 

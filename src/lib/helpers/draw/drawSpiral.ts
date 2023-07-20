@@ -14,7 +14,7 @@ const drawSpiral = (
 	const swirls = 2;
 	const radius = Math.min(width, height) / 2;
 	const maxAngle = swirls * Math.PI * 2;
-	const totalPoints = 360; // 360 * swirls
+	const totalPoints = 180; // 360 * swirls
 	const startAngle = isClockwise ? 0 : maxAngle;
 	const angleIncrement = (isClockwise ? maxAngle : -maxAngle) / totalPoints;
 

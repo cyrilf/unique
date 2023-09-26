@@ -1,5 +1,6 @@
 <svelte:head>
 	<title>About</title>
+	<link rel="stylesheet" href="main.css" />
 </svelte:head>
 
 <div class="text">
@@ -28,20 +29,5 @@
 	.buttons {
 		display: inline-flex;
 		gap: 1rem;
-	}
-
-	.button {
-		border: 1px solid rgba(0, 0, 0, 0.3);
-		color: black;
-		font-family: system-ui, -apple-system, system-ui, 'Helvetica Neue', Helvetica, Arial, sans-serif;
-		font-weight: 600;
-		padding: 0.8rem 1.5rem;
-		text-decoration: none;
-	}
-
-	.button:hover,
-	.button:focus {
-		border-color: rgba(0, 0, 0, 0.15);
-		color: rgba(0, 0, 0, 0.65);
 	}
 </style>

@@ -1,0 +1,16 @@
+.button {
+	border: 1px solid rgba(0, 0, 0, 0.3);
+	background: white;
+	color: black;
+	cursor: pointer;
+	font-family: system-ui, -apple-system, system-ui, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-weight: 600;
+	padding: 0.8rem 1.5rem;
+	text-decoration: none;
+}
+
+.button:hover,
+.button:focus {
+	color: rgba(0, 0, 0, 0.7);
+	border-color: rgba(0, 0, 0, 0.1);
+}

@@ -71,6 +71,14 @@
 		url.searchParams.set('id', Math.random() * 100000000000000000 + '');
 		goto(url);
 	};
+
+	export const download = () => {
+		const downloadLink = document.createElement('a');
+		const url = canvas.toDataURL('image/png');
+		downloadLink.href = url;
+		downloadLink.download = 'unique-art.png';
+		downloadLink.click();
+	};
 </script>
 
 <canvas bind:this={canvas} {width} {height} on:click={randomize} />

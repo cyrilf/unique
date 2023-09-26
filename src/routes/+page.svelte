@@ -7,36 +7,6 @@
 	<title>Unique</title>
 </svelte:head>
 
-<div class="container">
-	<h1>Unique.</h1>
-	<div class="wrapper">
-		<Frame>
-			<Canvas />
-		</Frame>
-	</div>
-</div>
-
-<style>
-	:global(body) {
-		margin: 0;
-		padding: 0;
-		background: rgba(200, 225, 225, 1);
-	}
-
-	.container {
-		width: 100vw;
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.wrapper {
-		display: flex;
-		flex: 1;
-		align-items: center;
-	}
-	h1 {
-		font-family: 'Vollkorn', serif;
-		margin: 2rem;
-	}
-</style>
+<Frame>
+	<Canvas />
+</Frame>

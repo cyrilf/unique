@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
+	import { page } from '$app/stores';
+
 	import { getRandomColor, getHueFilter } from '$lib/helpers/colors';
-	import { getRandomBool } from '$lib/helpers/random';
+	import Random from '$lib/helpers/random';
 	import { Drawer } from '$lib/helpers/draw';
 	import { getGridCoords } from '$lib/helpers/grid';
+	import { goto } from '$app/navigation';
 
 	let canvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
@@ -14,6 +17,11 @@
 	let stepX: number;
 	let stepY: number;
 	$: gridCoords = getGridCoords(steps, stepX, stepY);
+	let seed: string | undefined;
+	$: {
+		seed = $page.url.searchParams.get('id') ?? undefined;
+		ctx && draw(ctx);
+	}
 
 	onMount(async () => {
 		const dpr = window.devicePixelRatio;
@@ -31,17 +39,18 @@
 
 		if (ctx) {
 			ctx.scale(dpr, dpr);
-			draw(ctx);
+			seed ? draw(ctx) : randomize();
 		}
 	});
 
 	const draw = (ctx: CanvasRenderingContext2D) => {
-		const drawer = new Drawer(ctx, width, height);
+		const random = new Random(seed);
+
+		const drawer = new Drawer(ctx, width, height, random);
 		drawer.clear();
 
-		const isColored = getRandomBool();
-		canvas.style.filter = isColored ? getHueFilter() : '';
-		drawer.setRandomDrawFunction();
+		const isColored = random.boolean();
+		canvas.style.filter = isColored ? getHueFilter(random) : '';
 
 		gridCoords.forEach((coord) => {
 			// DEBUG MODE
@@ -49,7 +58,7 @@
 			// ctx.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
 			// ctx.strokeStyle = 'black';
 			// ctx.stroke();
-			const color = isColored ? getRandomColor() : 'black';
+			const color = isColored ? getRandomColor(random) : 'black';
 			ctx.fillStyle = color;
 			ctx.strokeStyle = color;
 
@@ -57,11 +66,10 @@
 		});
 	};
 
-	const randomize = () => {
-		// steps = steps + 2;
-		// stepX = width / steps;
-		// stepY = width / steps;
-		ctx && draw(ctx);
+	const randomize = async () => {
+		const url = new URL($page.url);
+		url.searchParams.set('id', Math.random() * 100000000000000000 + '');
+		goto(url);
 	};
 </script>
 

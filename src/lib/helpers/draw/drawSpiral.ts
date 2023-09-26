@@ -1,15 +1,10 @@
-import { getRandomBool } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawSpiral = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
+const drawSpiral: DrawFunction = (ctx, { x, y }, width, height, random) => {
 	ctx.beginPath();
 	// ctx.moveTo(x, y);
-	const isClockwise = getRandomBool();
-	const isFlip = getRandomBool();
+	const isClockwise = random.boolean();
+	const isFlip = random.boolean();
 
 	const swirls = 2;
 	const radius = Math.min(width, height) / 2;

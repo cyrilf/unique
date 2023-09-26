@@ -1,12 +1,7 @@
-import { getRandomBool } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawHorizontalLine = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
-	const isHorizontal = getRandomBool();
+const drawHorizontalLine: DrawFunction = (ctx, { x, y }, width, height, random) => {
+	const isHorizontal = random.boolean();
 	ctx.beginPath();
 	if (isHorizontal) {
 		ctx.moveTo(x - width / 2, y);

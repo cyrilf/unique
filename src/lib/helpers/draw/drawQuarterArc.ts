@@ -1,11 +1,6 @@
-import { pickOneRandomly } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawQuarterArc = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
+const drawQuarterArc: DrawFunction = (ctx, { x, y }, width, height, random) => {
 	ctx.beginPath();
 	const arc = (sAngle: number, eAngle: number) =>
 		ctx.arc(x, y, Math.min(width, height) / 2, sAngle, eAngle);
@@ -15,7 +10,7 @@ const drawQuarterArc = (
 		() => arc(Math.PI, 1.5 * Math.PI), // left-top
 		() => arc(1.5 * Math.PI, 0) // top-right
 	];
-	pickOneRandomly(arcs)();
+	random.choose(arcs)();
 	ctx.stroke();
 };
 

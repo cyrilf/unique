@@ -1,13 +1,8 @@
-import { getRandomInt } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawSquares = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
+const drawSquares: DrawFunction = (ctx, { x, y }, width, height, random) => {
 	let size = Math.min(height, width);
-	const gap = size / (getRandomInt(20) + 1);
+	const gap = size / random.int(1, 20);
 	while (size > 0) {
 		ctx.beginPath();
 		ctx.strokeRect(x - size / 2, y - size / 2, size, size);

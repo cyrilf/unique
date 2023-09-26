@@ -1,14 +1,9 @@
-import { getRandomBool } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawBlobbyLine = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
+const drawBlobbyLine: DrawFunction = (ctx, { x, y }, width, height, random) => {
 	ctx.beginPath();
 
-	const isRight = getRandomBool();
+	const isRight = random.boolean();
 	let i = 10;
 	while (i > 0) {
 		ctx.arc(

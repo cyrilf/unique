@@ -1,14 +1,9 @@
-import { getRandomBool } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawSquareOrCircle = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
-	const isSquare = getRandomBool();
-	const isFill = getRandomBool();
-	const isLarge = getRandomBool();
+const drawSquareOrCircle: DrawFunction = (ctx, { x, y }, width, height, random) => {
+	const isSquare = random.boolean();
+	const isFill = random.boolean();
+	const isLarge = random.boolean();
 
 	ctx.beginPath();
 	if (isSquare) {

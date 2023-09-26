@@ -1,4 +1,5 @@
-import { pickOneRandomly } from '$lib/helpers/random';
+import type Random from '$lib/helpers/random';
+import type { Palette } from '$lib/types';
 
 const luxuryColorPalette: Palette = [
 	'#663399', // Royal Purple
@@ -9,6 +10,8 @@ const luxuryColorPalette: Palette = [
 	'#6B8E23' // Olive Drab
 ];
 
-const getRandomColorFromPalette = (palette: Palette) => pickOneRandomly(palette);
-export const getRandomColor = () => getRandomColorFromPalette(luxuryColorPalette);
-export const getHueFilter = () => 'hue-rotate(' + Math.floor(Math.random() * 360) + 'deg)';
+const getRandomColorFromPalette = (palette: Palette, random: Random) => random.choose(palette);
+export const getRandomColor = (random: Random) =>
+	getRandomColorFromPalette(luxuryColorPalette, random);
+export const getHueFilter = (random: Random) =>
+	'hue-rotate(' + Math.floor(random.float() * 360) + 'deg)';

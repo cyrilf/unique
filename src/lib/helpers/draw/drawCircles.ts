@@ -1,15 +1,9 @@
-import { getRandomInt } from '$lib/helpers/random';
+import type { DrawFunction } from '$lib/types';
 
-const drawCircles = (
-	ctx: CanvasRenderingContext2D,
-	{ x, y }: Coord,
-	width: number,
-	height: number
-) => {
+const drawCircles: DrawFunction = (ctx, { x, y }, width, height, random) => {
 	let radius = Math.max(0, Math.min(width, height) / 2 - 5);
-	const gap = radius / (getRandomInt(10) + 1);
+	const gap = radius / random.int(1, 10);
 	while (radius > 0) {
-		// gap = radius / getRandomInt(10);
 		ctx.beginPath();
 		ctx.arc(x, y, radius, 0, 2 * Math.PI);
 		radius -= gap;

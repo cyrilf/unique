@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
 	import { page } from '$app/stores';
+	import { getHueFilter } from '$lib/helpers/colors'; // Updated the getRandomColor function to getHueFilter only
 
-	import { getRandomColor, getHueFilter } from '$lib/helpers/colors';
 	import Random from '$lib/helpers/random';
 	import { Drawer } from '$lib/helpers/draw';
 	import { getGridCoords } from '$lib/helpers/grid';
@@ -43,6 +43,7 @@
 		}
 	});
 
+	// Fixed issue #1 
 	const draw = (ctx: CanvasRenderingContext2D) => {
 		const random = new Random(seed);
 
@@ -50,15 +51,14 @@
 		drawer.clear();
 
 		const isColored = random.boolean();
-		canvas.style.filter = isColored ? getHueFilter(random) : '';
 
 		gridCoords.forEach((coord) => {
-			// DEBUG MODE
-			// ctx.beginPath();
-			// ctx.arc(coord.x, coord.y, 1, 0, Math.PI * 2);
-			// ctx.strokeStyle = 'black';
-			// ctx.stroke();
-			const color = isColored ? getRandomColor(random) : 'black';
+			let color;
+			if (isColored) {
+				color = getHueFilter(random); // Use the imported getHueFilter function
+			} else {
+				color = 'black';
+			}
 			ctx.fillStyle = color;
 			ctx.strokeStyle = color;
 

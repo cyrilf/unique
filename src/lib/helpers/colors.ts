@@ -13,5 +13,13 @@ const luxuryColorPalette: Palette = [
 const getRandomColorFromPalette = (palette: Palette, random: Random) => random.choose(palette);
 export const getRandomColor = (random: Random) =>
 	getRandomColorFromPalette(luxuryColorPalette, random);
-export const getHueFilter = (random: Random) =>
-	'hue-rotate(' + Math.floor(random.float() * 360) + 'deg)';
+
+// implemented fix by @lakshaybhushan
+// Fixed issue #1
+export const getHueFilter = (random: Random) => {
+	const hue = Math.floor(random.float() * 360); // Generate a random hue value between 0 and 359
+	const saturation = Math.floor(random.float() * 101); // Generate a random saturation value between 0 and 100
+	const lightness = Math.floor(random.float() * 101); // Generate a random lightness value between 0 and 100
+
+	return `hsl(${hue}, ${saturation}%, ${lightness}%)`; // Return an HSL color string with random hue, saturation, and lightness
+};
